@@ -1,0 +1,7 @@
+<div>
+    <button class="btn" *ngIf="connected_wallet.value == false" (click)="connect_wallet()">Connect your wallet</button>
+</div>
+
+<div *ngIf="connected_wallet.value == true"><button class="btn" (click)="connect_wallet()">Connected</button></div>
+
+{{connected_wallet.value}}
