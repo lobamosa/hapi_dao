@@ -14,8 +14,7 @@ contract Hapi is ERC1155, Ownable {
     Counters.Counter public tokenSupply;
 
     
-    constructor(
-        uint256 _max_hapi){
+    constructor(uint256 _max_hapi) ERC1155('https://ipfs.io/ipfs/QmXuxNpTpgyTwJbhZQ7VK9hbFYu112gbEQk9YnKfYqUpYQ?filename=sample_metadata.json') {
         MAX_HAPI = _max_hapi;
     }
 
