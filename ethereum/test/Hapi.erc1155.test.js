@@ -2,7 +2,13 @@ const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
 describe("Hapi", function () {
-  it("Should rmint the new token once it's signed", async function () {
+  it('should initialize Hapi DAO contract', async function () {
+    const hapi = await ethers.getContractFactory('Hapi')
+    const contract = await hapi.deploy(1000);
+    expect(await contract.MAX_HAPI()).to.equal(1000);
+
+  })
+  it("Should mint the new token once it's signed", async function () {
     const Greeter = await ethers.getContractFactory("Hapi");
     const greeter = await Greeter.deploy(1);
     await greeter.deployed();
