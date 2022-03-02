@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts v4.4.1 (token/ERC1155/ERC1155.sol)
 
-pragma solidity ^0.5.9;
+pragma solidity ^0.8.4;
 
 /**
     @title ERC-1155 Multi Token Standard
