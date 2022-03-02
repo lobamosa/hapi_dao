@@ -5,6 +5,9 @@ import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+import "@openzeppelin/contracts/access/AccessControl.sol";
+import "@openzeppelin/contracts/security/Pausable.sol";
+
 contract Hapi is ERC1155, Ownable {
     
     uint256 public MAX_HAPI;
@@ -22,13 +25,13 @@ contract Hapi is ERC1155, Ownable {
         _setURI(newuri);
     }
 
-    function _safeMint(address account, uint256 id, uint256 _amount)
+    function _safeMint(address account, uint256 tokenId, uint256 _amount)
         public
         onlyOwner
     {
         require(_amount > 0, "You must mint at least 1 gray boy");
         require(tokenSupply.current().add(_amount) <= MAX_HAPI);
 
-        _safeMint(account, id, _amount);
+        _safeMint(account, tokenId, _amount);
     }
 }
