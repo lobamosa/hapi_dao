@@ -38,10 +38,10 @@ contract StakingToken is ERC20, Ownable {
        _mint(_owner, _supply);
    }
 
-   function isStakHolder(address _address) public view returns(bool, address)
+   function isStakHolder(address _address) public view returns(bool)
    {
-       if(_address == listStakholder[_address]._address) return (true, listStakholder[_address]._address);
-       return (false, listStakholder[_address]._address);
+       if(_address == listStakholder[_address]._address) return true;
+       return false;
    }
    function getStakHolderAddress(address _address) public view returns(address)
    {
