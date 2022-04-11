@@ -54,7 +54,7 @@ contract StakingToken is ERC20, Ownable {
 
    function getStakHolder(address _address) public view returns (address, uint256)
    {
-       return (listStakholder[_address]._address, listStakholder[_address].id);
+       return (listStakholder[_address]._address, listStakholder[_address].amount_staked);
    }
 
    
