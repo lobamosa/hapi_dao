@@ -25,6 +25,7 @@ describe('staking', () => {
         const symbol = "hapi";
         const staking = await ethers.getContractFactory("StakingToken")
         const stakingContract = await staking.deploy(owner.address, supply, name, symbol);
+        console.log(address1.address);
         await stakingContract.addStackHolder(address1.address, 100);
         const stakHolder = await stakingContract.getStakHolder(address1.address);
         const stackHolderAddress = await stakingContract.getStakHolderAddress(address1.address);
