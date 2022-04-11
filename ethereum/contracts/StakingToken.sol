@@ -49,9 +49,9 @@ contract StakingToken is ERC20, Ownable {
    }
    function addStackHolder(address _address, uint256 amount_staked) public
    {
-       Stakholder memory newStakholder = Stakholder(_address, amount_staked);
-       listStakholder[msg.sender] = newStakholder;
-       listStakholders.push(msg.sender);
+       Stakholder memory stakholder = Stakholder(_address, amount_staked);
+       listStakholder[_address] = stakholder;
+       listStakholders.push(_address);
 
    }
 
