@@ -12,7 +12,7 @@ contract StakingToken is ERC20, Ownable {
 
     struct Stakholder {
         address _address;
-        uint256 id;
+        uint256 amount_staked;
     }
     mapping (address => Stakholder) listStakholder;
     address[] listStakholders;
@@ -38,15 +38,15 @@ contract StakingToken is ERC20, Ownable {
        _mint(_owner, _supply);
    }
 
-   function isStakHolder(address _address, Stakholder memory stakholder) public view returns(bool, address)
+   function isStakHolder(address _address) public view returns(bool, address)
    {
-       if(_address == stakholder._address) return (true, stakholder._address);
-       return (false, msg.sender);
+       if(_address == listStakholder[_address]._address) return (true, listStakholder[_address]._address);
+       return (false, listStakholder[_address]._address);
    }
 
-   function addStackHolder(address _address, uint256 id) public
+   function addStackHolder(address _address, uint256 amount_staked) public
    {
-       Stakholder memory newStakholder = Stakholder(_address, id);
+       Stakholder memory newStakholder = Stakholder(_address, amount_staked);
        listStakholder[msg.sender] = newStakholder;
        listStakholders.push(msg.sender);
 
