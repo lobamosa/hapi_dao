@@ -43,7 +43,10 @@ contract StakingToken is ERC20, Ownable {
        if(_address == listStakholder[_address]._address) return (true, listStakholder[_address]._address);
        return (false, listStakholder[_address]._address);
    }
-
+   function getStakHolderAddress(address _address) public view returns(address)
+   {
+       return listStakholder[_address]._address;
+   }
    function addStackHolder(address _address, uint256 amount_staked) public
    {
        Stakholder memory newStakholder = Stakholder(_address, amount_staked);
@@ -52,9 +55,9 @@ contract StakingToken is ERC20, Ownable {
 
    }
 
-   function getStakHolder(address _address) public view returns (address, uint256)
+   function getStakHolder(address _address) public view returns (Stakholder memory)
    {
-       return (listStakholder[_address]._address, listStakholder[_address].amount_staked);
+       return listStakholder[_address];
    }
 
    
