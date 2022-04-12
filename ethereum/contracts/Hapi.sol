@@ -1,37 +1,43 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
-import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
 
-contract Hapi is ERC1155, Ownable {
+contract Hapi is ERC721, Ownable {
     
-    uint256 public MAX_HAPI;
     using SafeMath for uint256;
+    uint256 public constant THORS_HAMMER = 2;
     using Counters for Counters.Counter;
 
-    Counters.Counter public tokenSupply;
+    Counters.Counter private _tokenIds;
 
+    uint256 public constant MAX_HAPI = 10000;
     
-    constructor(uint256 _max_hapi) ERC1155('https://ipfs.io/ipfs/QmXuxNpTpgyTwJbhZQ7VK9hbFYu112gbEQk9YnKfYqUpYQ?filename=sample_metadata.json') {
-        MAX_HAPI = _max_hapi;
+    constructor(uint256 _maxHapi, uint256 _maxHapiPerPurchase, uint256 _maxHapiWhitelistCap
+    ) ERC721("Hapi", "Hapi"){
+        MAX_HAPI = _maxGrayBoys;
+        MAX_HAPI_PER_PURCHASE = _maxGrayBoysPerPurchase;
+        MAX_HAPI_WHITELIST_CAP = _maxGrayBoysWhitelistCap;
     }
 
-    function setURI(string memory newuri) public onlyOwner {
-        _setURI(newuri);
-    }
+    function _safeMintHapi(uint256 _quantity) internal {
+    require(_quantity > 0, "You must mint at least 1 hapi");
+    require(tokenSupply.current().add(_quantity) <= MAX_GRAY_BOYS, "This purchase would exceed max supply of Gray Boys");
+    require(msg.value >= GRAY_BOY_PRICE.mul(_quantity), "The ether value sent is not correct");
 
-    function _safeMint(address account, uint256 tokenId, uint256 _amount)
-        public
-        onlyOwner
-    {
-        require(_amount > 0, "You must mint at least 1 gray boy");
-        require(tokenSupply.current().add(_amount) <= MAX_HAPI);
+    for (uint256 i = 0; i < _quantity; i++) {
+      uint256 mintIndex = tokenSupply.current();
 
-        _safeMint(account, tokenId, _amount);
+      if (mintIndex < MAX_GRAY_BOYS) {
+        tokenSupply.increment();
+        _safeMint(msg.sender, mintIndex);
+      }
     }
+  }
+
 }
