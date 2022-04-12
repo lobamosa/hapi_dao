@@ -54,7 +54,12 @@ contract StakingToken is ERC20, Ownable {
        listStakholders.push(_address);
 
    }
-
+   function remove_stakeholder(address _address) public returns(address)
+   {
+       (bool _isStakeholder) = isStakHolder(_address);
+       if(_isStakeholder)
+        delete listStakholder[_address];
+   }
    function getStakHolder(address _address) public view returns (Stakholder memory)
    {
        return listStakholder[_address];
