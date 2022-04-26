@@ -1,47 +1,41 @@
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.4;
+//SPDX-License-Identifier: Unlicense
+pragma solidity ^0.8.4; 
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
-import "@openzeppelin/contracts/utils/math/SafeMath.sol";
-import "@openzeppelin/contracts/access/AccessControl.sol";
-import "@openzeppelin/contracts/security/Pausable.sol";
 
-contract Hapi is ERC721, Ownable {
-    
-    using SafeMath for uint256;
-    uint256 public constant THORS_HAMMER = 2;
-    using Counters for Counters.Counter;
+contract Hapi is ERC721 {
 
-    Counters.Counter private _tokenIds;
-    Counters.Counter public tokenSupply;
+    uint256 public tokenCounter;
+    mapping (uint256 => string) private _tokenURIs;
 
-    uint256 public  MAX_HAPI = 10000;
-    uint256 public MAX_HAPI_PER_PURCHASE;
-    uint256 public  MAX_HAPI_WHITELIST_CAP;
-    uint256 public  HAPI_PRICE = 0.07 ether;
-    
-    constructor(uint256 _maxHapi, uint256 _maxHapiPerPurchase, uint256 _maxHapiWhitelistCap
-    ) ERC721("Hapi", "Hapi"){
-        MAX_HAPI = _maxHapi;
-        MAX_HAPI_PER_PURCHASE = _maxHapiPerPurchase;
-        MAX_HAPI_WHITELIST_CAP = _maxHapiWhitelistCap;
+    constructor(
+        string memory name,
+        string memory symbol
+    ) ERC721(name, symbol) {
+        tokenCounter = 0;
     }
 
-    function _safeMintHapi(uint256 _quantity) internal {
-    require(_quantity > 0, "You must mint at least 1 hapi");
-    require(tokenSupply.current().add(_quantity) <= MAX_HAPI, "This purchase would exceed max supply of Gray Boys");
-    require(msg.value >= HAPI_PRICE.mul(_quantity), "The ether value sent is not correct");
+    function mint(string memory _tokenURI) public {
+        _safeMint(msg.sender, tokenCounter);
+        _setTokenURI(tokenCounter, _tokenURI);
 
-    for (uint256 i = 0; i < _quantity; i++) {
-      uint256 mintIndex = tokenSupply.current();
-
-      if (mintIndex < MAX_HAPI) {
-        tokenSupply.increment();
-        _safeMint(msg.sender, mintIndex);
-      }
+        tokenCounter++;
     }
-  }
+
+    function _setTokenURI(uint256 _tokenId, string memory _tokenURI) internal virtual {
+        require(
+            _exists(_tokenId),
+            "ERC721Metadata: URI set of nonexistent token"
+        );  // Checks if the tokenId exists
+        _tokenURIs[_tokenId] = _tokenURI;
+    }
+
+    function tokenURI(uint256 _tokenId) public view virtual override returns(string memory) {
+        require(
+            _exists(_tokenId),
+            "ERC721Metadata: URI set of nonexistent token"
+        );
+        return _tokenURIs[_tokenId];
+    }
 
 }
