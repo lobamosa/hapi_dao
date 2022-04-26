@@ -15,25 +15,29 @@ contract Hapi is ERC721, Ownable {
     using Counters for Counters.Counter;
 
     Counters.Counter private _tokenIds;
+    Counters.Counter public tokenSupply;
 
-    uint256 public constant MAX_HAPI = 10000;
+    uint256 public  MAX_HAPI = 10000;
+    uint256 public MAX_HAPI_PER_PURCHASE;
+    uint256 public  MAX_HAPI_WHITELIST_CAP;
+    uint256 public  HAPI_PRICE = 0.07 ether;
     
     constructor(uint256 _maxHapi, uint256 _maxHapiPerPurchase, uint256 _maxHapiWhitelistCap
     ) ERC721("Hapi", "Hapi"){
-        MAX_HAPI = _maxGrayBoys;
-        MAX_HAPI_PER_PURCHASE = _maxGrayBoysPerPurchase;
-        MAX_HAPI_WHITELIST_CAP = _maxGrayBoysWhitelistCap;
+        MAX_HAPI = _maxHapi;
+        MAX_HAPI_PER_PURCHASE = _maxHapiPerPurchase;
+        MAX_HAPI_WHITELIST_CAP = _maxHapiWhitelistCap;
     }
 
     function _safeMintHapi(uint256 _quantity) internal {
     require(_quantity > 0, "You must mint at least 1 hapi");
-    require(tokenSupply.current().add(_quantity) <= MAX_GRAY_BOYS, "This purchase would exceed max supply of Gray Boys");
-    require(msg.value >= GRAY_BOY_PRICE.mul(_quantity), "The ether value sent is not correct");
+    require(tokenSupply.current().add(_quantity) <= MAX_HAPI, "This purchase would exceed max supply of Gray Boys");
+    require(msg.value >= HAPI_PRICE.mul(_quantity), "The ether value sent is not correct");
 
     for (uint256 i = 0; i < _quantity; i++) {
       uint256 mintIndex = tokenSupply.current();
 
-      if (mintIndex < MAX_GRAY_BOYS) {
+      if (mintIndex < MAX_HAPI) {
         tokenSupply.increment();
         _safeMint(msg.sender, mintIndex);
       }
